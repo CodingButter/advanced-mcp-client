@@ -26,16 +26,16 @@ Transform your MCP tool execution from **sequential bottlenecks** to **lightning
 
 <div align="center">
 
-| Aspect | Traditional MCP | Advanced MCP | Improvement |
-|--------|----------------|--------------|-------------|
-| **Execution Model** | 🐌 Sequential | ⚡ Parallel | **Revolutionary** |
-| **Speed** | 12s for 3 tools | 5s for 3 tools | **🚀 60% Faster** |
-| **Resource Usage** | 25% CPU | 85% CPU | **⚡ 240% Better** |
-| **User Experience** | ❌ Blocking | ✅ Responsive | **💫 Night & Day** |
+| Aspect | Traditional MCP | Advanced MCP | Key Advantage |
+|--------|----------------|--------------|---------------|
+| **Execution Model** | 🐌 Sequential | ⚡ Parallel | **Concurrent Processing** |
+| **Resource Usage** | Single-threaded | Multi-threaded | **Full System Utilization** |
+| **Responsiveness** | ❌ Blocking | ✅ Non-blocking | **Better User Experience** |
+| **Scalability** | Limited | Configurable | **Adapts to Workload** |
 
 </div>
 
-**The difference is dramatic:** While traditional clients execute tools sequentially (Tool 1 → Tool 2 → Tool 3), our advanced client dispatches all tools simultaneously across multiple threads, completing in the time of the slowest tool rather than the sum of all tools.
+**The fundamental difference:** While traditional clients execute tools sequentially (Tool 1 → Tool 2 → Tool 3), our advanced client dispatches all tools simultaneously across multiple threads, completing in the time of the slowest tool rather than the sum of all tools.
 
 ---
 
@@ -45,10 +45,10 @@ Transform your MCP tool execution from **sequential bottlenecks** to **lightning
 
 <div align="center">
 
-| Feature | Traditional MCP | Advanced MCP | Improvement |
+| Feature | Traditional MCP | Advanced MCP | Key Benefit |
 |---------|----------------|--------------|-------------|
-| **Tool Execution** | Sequential | Parallel | 🚀 **3x Faster** |
-| **Resource Usage** | 25% CPU | 85% CPU | ⚡ **240% More Efficient** |
+| **Tool Execution** | Sequential | Parallel | 🚀 **Concurrent Processing** |
+| **Resource Usage** | Single-threaded | Multi-threaded | ⚡ **Better Utilization** |
 | **Task Scheduling** | ❌ None | ✅ Time-based | 🎯 **Smart Orchestration** |
 | **Error Recovery** | ❌ Blocking | ✅ Isolated | 🛡️ **Fault Tolerant** |
 | **UI Responsiveness** | ❌ Frozen | ✅ Real-time | 💫 **Live Updates** |
@@ -97,19 +97,19 @@ mindmap
 
 <div style="background: rgba(166, 227, 161, 0.1); border-left: 4px solid #a6e3a1; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
 <div style="color: #a6e3a1; font-weight: bold; margin-bottom: 10px;">🎯 Active Tasks</div>
-<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#abc123]</span> 🔄 Weather Analysis <span style="float: right; color: #f38ba8;">Thread-2 | ⏱️ 00:45</span></div>
-<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#def456]</span> ⏳ Scheduled Report <span style="float: right; color: #fab387;">🕐 14:30 | ⏰ +2h 15m</span></div>
-<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#ghi789]</span> 🎲 ML Model Training <span style="float: right; color: #f38ba8;">Thread-4 | 🔥 03:22</span></div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#abc123]</span> 🔄 Weather Analysis <span style="float: right; color: #f38ba8;">Thread-2 | Running</span></div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#def456]</span> ⏳ Scheduled Report <span style="float: right; color: #fab387;">Scheduled | Pending</span></div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#ghi789]</span> 🎲 Data Processing <span style="float: right; color: #f38ba8;">Thread-4 | Running</span></div>
 </div>
 
 <div style="background: rgba(137, 180, 250, 0.1); border-left: 4px solid #89b4fa; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
-<div style="color: #89b4fa; font-weight: bold; margin-bottom: 10px;">🔄 Executing tools in parallel:</div>
+<div style="color: #89b4fa; font-weight: bold; margin-bottom: 10px;">🔄 Parallel Tool Execution:</div>
 
 <div style="margin: 10px 0;">
 🌤️ Weather API
 <div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
 <div style="background: linear-gradient(90deg, #a6e3a1, #94e2d5); height: 100%; width: 100%; border-radius: 10px;"></div>
-<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">100% ✅ (2.1s)</span>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">✅ Complete</span>
 </div>
 </div>
 
@@ -117,7 +117,7 @@ mindmap
 📊 Data Analysis
 <div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
 <div style="background: linear-gradient(90deg, #f9e2af, #fab387); height: 100%; width: 95%; border-radius: 10px;"></div>
-<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">95% 🔄 (2.8s)</span>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">🔄 Running</span>
 </div>
 </div>
 
@@ -125,23 +125,23 @@ mindmap
 📧 Email Service
 <div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
 <div style="background: linear-gradient(90deg, #89b4fa, #cba6f7); height: 100%; width: 40%; border-radius: 10px;"></div>
-<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">40% 🔄 (5.4s)</span>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">🔄 Running</span>
 </div>
 </div>
 
 <div style="margin: 10px 0;">
 🤖 AI Processing
 <div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
-<div style="background: linear-gradient(90deg, #f38ba8, #eba0ac); height: 100%; width: 10%; border-radius: 10px;"></div>
-<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">10% 🔄 (1.2s)</span>
+<div style="background: linear-gradient(90deg, #f38ba8, #eba0ac); height: 100%; width: 15%; border-radius: 10px;"></div>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">🔄 Starting</span>
 </div>
 </div>
 
 <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #45475a;">
-<strong>Overall Progress:</strong>
+<strong>Concurrent Execution:</strong>
 <div style="background: #313244; height: 24px; border-radius: 12px; margin: 8px 0; position: relative; overflow: hidden;">
-<div style="background: linear-gradient(90deg, #89b4fa, #cba6f7, #f38ba8); height: 100%; width: 61%; border-radius: 12px;"></div>
-<span style="position: absolute; top: 5px; left: 12px; font-size: 12px; color: #1e1e2e; font-weight: bold;">61% (4 tools active)</span>
+<div style="background: linear-gradient(90deg, #89b4fa, #cba6f7, #f38ba8); height: 100%; width: 60%; border-radius: 12px;"></div>
+<span style="position: absolute; top: 5px; left: 12px; font-size: 12px; color: #1e1e2e; font-weight: bold;">Multiple tools running simultaneously</span>
 </div>
 </div>
 
@@ -169,10 +169,10 @@ mindmap
 ```mermaid
 graph TD
     A1[🔵 User Input] --> B1[🤖 LLM Processing]
-    B1 --> C1[🔧 Tool 1 Execution<br/>⏱️ 5 seconds]
-    C1 --> D1[🔧 Tool 2 Execution<br/>⏱️ 3 seconds]
-    D1 --> E1[🔧 Tool 3 Execution<br/>⏱️ 4 seconds]
-    E1 --> F1[📤 Response<br/>💥 Total: 12s]
+    B1 --> C1[🔧 Tool 1 Execution<br/>⏱️ Wait for completion]
+    C1 --> D1[🔧 Tool 2 Execution<br/>⏱️ Wait for completion]
+    D1 --> E1[🔧 Tool 3 Execution<br/>⏱️ Wait for completion]
+    E1 --> F1[📤 Response<br/>💥 Sum of all tool times]
     
     style A1 fill:#ffcccb,stroke:#d32f2f,stroke-width:3px,color:#000
     style F1 fill:#ffcccb,stroke:#d32f2f,stroke-width:3px,color:#000
@@ -192,14 +192,14 @@ graph TD
     B2 --> C2[📋 Task Scheduler]
     C2 --> D2[🧵 Thread Pool]
     
-    D2 --> E2[🔧 Tool 1<br/>⏱️ 5s]
-    D2 --> F2[🔧 Tool 2<br/>⏱️ 3s]
-    D2 --> G2[🔧 Tool 3<br/>⏱️ 4s]
+    D2 --> E2[🔧 Tool 1<br/>⚡ Concurrent]
+    D2 --> F2[🔧 Tool 2<br/>⚡ Concurrent]
+    D2 --> G2[🔧 Tool 3<br/>⚡ Concurrent]
     
     E2 --> H2[📊 Result Aggregator]
     F2 --> H2
     G2 --> H2
-    H2 --> I2[📤 Response<br/>🚀 Total: 5s]
+    H2 --> I2[📤 Response<br/>🚀 Longest tool time only]
     
     style A2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
     style I2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
@@ -350,15 +350,15 @@ The terminal interface provides rich, real-time feedback without overwhelming th
 
 ### 🌅 **Morning Routine Automation**
 
-Transform a typical 12-second sequential process into 3-second parallel execution:
+Transform sequential processing into parallel execution:
 
-| Task | Traditional Time | Parallel Time |
-|------|-----------------|---------------|
-| Weather Check | 2s | 2s |
-| Calendar Sync | 3s | ↑ |
-| Email Summary | 4s | ↑ |
-| Stock Updates | 3s | ↑ |
-| **Total** | **12s** | **🚀 3s** |
+| Task | Traditional Approach | Parallel Approach |
+|------|---------------------|-------------------|
+| Weather Check | Execute first, wait for completion | Execute concurrently |
+| Calendar Sync | Wait for weather, then execute | Execute concurrently |
+| Email Summary | Wait for calendar, then execute | Execute concurrently |
+| Stock Updates | Wait for email, then execute | Execute concurrently |
+| **Result** | **Sequential bottleneck** | **🚀 Concurrent completion** |
 
 ### 🏢 **Business Intelligence Workflows**
 
@@ -380,7 +380,7 @@ Transform a typical 12-second sequential process into 3-second parallel executio
 
 **Seamless Migration:**
 - **✅ Drop-in Replacement**: Same interface as basic MCP clients
-- **🚀 Instant Performance**: 3x speed improvement without code changes
+- **🚀 Performance Boost**: Parallel execution without code changes
 - **📊 Built-in Monitoring**: Real-time insights into execution patterns
 - **🔧 Flexible Configuration**: Tune for your specific use case
 
@@ -395,31 +395,26 @@ Transform a typical 12-second sequential process into 3-second parallel executio
 
 ---
 
-## 📊 Performance Benchmarks
+## 📊 Performance Benefits
 
-### 🚀 Speed Comparison
+### 🚀 **Parallel Execution Advantage**
 
-```mermaid
-xychart-beta
-    title "Execution Time Comparison"
-    x-axis [1-Tool, 2-Tools, 3-Tools, 4-Tools, 5-Tools]
-    y-axis "Time (seconds)" 0 --> 25
-    bar [2, 5, 8, 12, 15]
-    bar [2, 3, 4, 5, 6]
-```
+The core performance benefit comes from **concurrent tool execution**:
 
-> **Legend:** 🔴 Traditional Sequential | 🟢 Advanced Parallel
+- **Traditional**: Tools execute one after another (sequential)
+- **Advanced**: Tools execute simultaneously (parallel)
+- **Result**: Total time = longest individual tool time (not sum of all tools)
 
-### 📈 Resource Utilization
+### 📈 **System Resource Utilization**
 
 <div align="center">
 
-| Metric | Traditional | Advanced | Improvement |
-|--------|-------------|----------|-------------|
-| **CPU Usage** | 25% | 85% | +240% |
-| **Memory Efficiency** | 60% | 92% | +53% |
-| **Throughput** | 12 tasks/min | 38 tasks/min | +217% |
-| **Error Recovery** | 45s | 5s | +800% |
+| Aspect | Traditional | Advanced | Benefit |
+|--------|-------------|----------|---------|
+| **CPU Cores** | Single-threaded | Multi-threaded | Full system utilization |
+| **Concurrency** | One tool at a time | Multiple tools simultaneously | Better resource efficiency |
+| **I/O Operations** | Blocking | Non-blocking | Improved responsiveness |
+| **Error Impact** | Cascading failures | Isolated failures | Better fault tolerance |
 
 </div>
 
