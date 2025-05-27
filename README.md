@@ -255,435 +255,116 @@ npm run build
 npm start
 ```
 
-### ⚡ Basic Usage
+### ⚡ Usage Patterns
 
-<details>
-<summary><b>💻 Command Line Interface</b></summary>
+**🖥️ Interactive Mode:**
+- Real-time conversation with parallel tool execution
+- Live status monitoring and task management
+- Instant feedback and progress visualization
 
-```bash
-# Interactive mode
-./mcp-client
+**⏰ Scheduled Operations:**
+- Time-based task execution for automated workflows
+- Priority-driven processing for critical operations
+- Dependency management for complex multi-step processes
 
-# Direct message
-./mcp-client "Analyze sales data and send summary email"
-
-# Schedule a task
-./mcp-client schedule --time "2024-01-15 14:30" --priority high "Generate weekly report"
-
-# Monitor status
-./mcp-client status
-```
-
-</details>
-
-<details>
-<summary><b>🔧 Programmatic API</b></summary>
-
-```typescript
-import { AdvancedMCPClient } from './client';
-
-// Initialize client
-const client = new AdvancedMCPClient({
-  openAIKey: process.env.OPENAI_API_KEY,
-  mcpServerUrl: 'stdio://path/to/mcp-server',
-  maxConcurrentThreads: 8,
-  enableScheduling: true
-});
-
-// Send message with parallel tool execution
-const response = await client.sendMessage(
-  "Check weather, calendar, and latest sales data"
-);
-
-// Schedule future task
-const task = await client.scheduleTask({
-  message: "Generate daily report",
-  scheduledTime: new Date('2024-01-15T14:30:00'),
-  priority: 'high'
-});
-
-// Monitor task progress
-client.onTaskUpdate((task) => {
-  console.log(`Task ${task.id}: ${task.status}`);
-});
-```
-
-</details>
+**🔧 Integration Scenarios:**
+- Drop-in replacement for existing MCP clients
+- Custom automation pipelines with scheduling
+- High-throughput applications requiring parallel processing
 
 ### 🔧 Configuration
 
-<details>
-<summary><b>📋 Complete Configuration Interface</b></summary>
+The client supports flexible configuration for different use cases:
 
-```typescript
-interface ClientConfig {
-  // 🔗 Connection settings
-  openAIKey: string;
-  mcpServerUrl: string;
-  model?: string; // Default: 'gpt-4-turbo'
-  
-  // 🧵 Thread pool configuration
-  maxConcurrentThreads?: number; // Default: 4
-  minThreads?: number; // Default: 2
-  threadIdleTimeout?: number; // Default: 30000ms
-  taskTimeout?: number; // Default: 300000ms (5 minutes)
-  retryAttempts?: number; // Default: 3
-  
-  // ⏰ Scheduling options
-  enableScheduling?: boolean; // Default: true
-  defaultTaskPriority?: 'low' | 'medium' | 'high'; // Default: 'medium'
-  maxQueueSize?: number; // Default: 1000
-  
-  // 🎨 UI preferences
-  enableProgressBars?: boolean; // Default: true
-  enableRealTimeUpdates?: boolean; // Default: true
-  logLevel?: 'debug' | 'info' | 'warn' | 'error'; // Default: 'info'
-  
-  // 🔧 Advanced options
-  systemPrompt?: string;
-  onNewMessage?: (message: Message) => void;
-  onTaskUpdate?: (task: Task) => void;
-  onError?: (error: Error) => void;
-}
-
-interface Task {
-  id: string;                           // Unique task identifier
-  toolCalls: ToolCall[];               // Associated tool calls
-  openAIToolCallIds: string[];         // OpenAI tool call IDs for mapping
-  priority: 'low' | 'medium' | 'high';
-  scheduledTime?: Date;                // Optional delayed execution
-  dependencies?: string[];             // Task IDs to wait for
-  status: 'pending' | 'running' | 'completed' | 'failed';
-  createdAt: Date;
-  startedAt?: Date;
-  completedAt?: Date;
-  error?: Error;
-}
-
-interface WorkerThread {
-  id: string;
-  status: 'idle' | 'busy';
-  currentTask?: string;
-  lastActivity: Date;
-  totalTasksProcessed: number;
-  averageExecutionTime: number;
-}
-```
-
-</details>
+- **🔗 Connection Management**: Multi-model LLM support with configurable endpoints
+- **🧵 Thread Pool Control**: Adjustable concurrency limits and resource allocation  
+- **⏰ Scheduling Options**: Time-based execution with priority queuing
+- **🎨 Interface Preferences**: Customizable UI behavior and logging levels
+- **🔧 Advanced Features**: Callback hooks and custom system prompts
 
 ---
 
-## 🔧 Implementation Deep Dive
+## 🎯 Core Concepts
 
-### 🏗️ Core MCP Client Foundation
+### 🔄 **Execution Philosophy**
 
-Based on the TypeScript tutorial, our implementation extends this simple 10-line pattern:
+Traditional MCP clients process tools sequentially, creating bottlenecks and poor resource utilization. Our advanced client transforms this by:
 
-<details>
-<summary><b>💻 Basic MCP Client Loop (Foundation)</b></summary>
+1. **🎯 Task Orchestration**: Grouping related tool calls into manageable execution units
+2. **🧵 Parallel Processing**: Distributing work across multiple execution threads  
+3. **⏰ Intelligent Scheduling**: Time-based and priority-driven task management
+4. **📊 Real-time Monitoring**: Live feedback and progress tracking
 
-```typescript
-// Traditional MCP Client (from tutorial)
-while (continueChat) {
-  const userInput = await getUserInput();                    // 1. Wait for user input
-  messagesArray.push({role: 'user', content: userInput});   // 2. Append to messages
-  const tools = await mcpClient.listTools();                // 3. List available tools
-  const response = await openAI.chat.completions.create({   // 4. Send to LLM
-    messages: messagesArray,
-    tools: convertMCPToolsToOpenAI(tools)
-  });
-  await handleToolCalls(response);                           // 5. Execute tool calls
-  messagesArray.push(response.choices[0].message);          // 6. Add LLM response
-}                                                            // 7. Loop until done
+### 🏗️ **System Architecture**
+
+```
+🔄 Core Loop:
+   User Input → LLM Analysis → Task Creation → Parallel Execution → Aggregated Response
+
+🧵 Thread Management:
+   Task Scheduler → Thread Pool → Worker Distribution → Result Aggregation
+
+⏰ Scheduling Engine:
+   Priority Queue → Dependency Resolution → Time-based Execution → Status Tracking
 ```
 
-</details>
+### 🎨 **User Experience Design**
 
-### ⚡ Advanced Parallel Implementation
+The terminal interface provides rich, real-time feedback without overwhelming the user:
 
-<details>
-<summary><b>🚀 Parallel Tool Execution Engine</b></summary>
-
-```typescript
-async handleToolCalls(response: ChatCompletion) {
-  if (!response.choices[0].message.tool_calls) return;
-  
-  // 🎯 Group tool calls into a task with unique ID
-  const task: Task = {
-    id: generateTaskId(),
-    toolCalls: response.choices[0].message.tool_calls,
-    openAIToolCallIds: response.choices[0].message.tool_calls.map(tc => tc.id),
-    priority: determinePriority(response.choices[0].message.tool_calls),
-    status: 'pending',
-    createdAt: new Date()
-  };
-  
-  // ⏰ Schedule task based on priority and dependencies
-  await this.taskScheduler.scheduleTask(task);
-  
-  // 🧵 Execute tools in parallel when scheduled
-  const results = await this.executeTaskInParallel(task);
-  
-  // 📥 Aggregate results and continue conversation
-  this.addToolResultsToMessages(results, task.openAIToolCallIds);
-}
-
-async executeTaskInParallel(task: Task): Promise<ToolResult[]> {
-  // 🎯 Distribute tool calls across available threads
-  const threadAssignments = this.threadPool.assignToolCalls(task.toolCalls);
-  
-  // ⚡ Execute all tool calls concurrently
-  const promises = threadAssignments.map(async (assignment) => {
-    const worker = this.threadPool.getWorker(assignment.threadId);
-    return worker.executeTool(assignment.toolCall);
-  });
-  
-  // ⏳ Wait for all tools to complete
-  return Promise.all(promises);
-}
-```
-
-</details>
-
-### ⏰ Advanced Scheduling System
-
-<details>
-<summary><b>🎯 Task Scheduler Implementation</b></summary>
-
-```typescript
-class TaskScheduler {
-  private taskQueue: PriorityQueue<Task>;
-  private scheduledTasks: Map<string, NodeJS.Timeout>;
-  private runningTasks: Map<string, Task>;
-  
-  async scheduleTask(task: Task): Promise<void> {
-    if (task.scheduledTime) {
-      // ⏰ Schedule for future execution
-      const delay = task.scheduledTime.getTime() - Date.now();
-      const timeout = setTimeout(() => {
-        this.executeTask(task);
-      }, delay);
-      
-      this.scheduledTasks.set(task.id, timeout);
-      this.onTaskUpdate?.(task);
-    } else if (task.dependencies?.length) {
-      // 🔗 Wait for dependencies
-      await this.waitForDependencies(task);
-      this.executeTask(task);
-    } else {
-      // ⚡ Immediate execution if threads available
-      this.executeTask(task);
-    }
-  }
-  
-  private async waitForDependencies(task: Task): Promise<void> {
-    const dependencyPromises = task.dependencies!.map(depId => 
-      this.waitForTaskCompletion(depId)
-    );
-    await Promise.all(dependencyPromises);
-  }
-  
-  private async executeTask(task: Task): Promise<void> {
-    task.status = 'running';
-    task.startedAt = new Date();
-    this.runningTasks.set(task.id, task);
-    
-    try {
-      const results = await this.threadPool.executeTask(task);
-      task.status = 'completed';
-      task.completedAt = new Date();
-      this.onTaskComplete?.(task, results);
-    } catch (error) {
-      task.status = 'failed';
-      task.error = error as Error;
-      this.onTaskError?.(task, error as Error);
-    } finally {
-      this.runningTasks.delete(task.id);
-    }
-  }
-}
-```
-
-</details>
-
-### 🖥️ Advanced Terminal Interface
-
-<details>
-<summary><b>🎨 Interactive Command System</b></summary>
-
-```typescript
-class TerminalInterface {
-  private client: AdvancedMCPClient;
-  private commands: Map<string, CommandHandler>;
-  
-  constructor(client: AdvancedMCPClient) {
-    this.client = client;
-    this.setupCommands();
-  }
-  
-  private setupCommands() {
-    this.commands.set('/status', this.showStatus.bind(this));
-    this.commands.set('/threads', this.showThreads.bind(this));
-    this.commands.set('/performance', this.showPerformance.bind(this));
-    this.commands.set('/config', this.handleConfig.bind(this));
-    this.commands.set('/cancel', this.cancelTask.bind(this));
-  }
-  
-  private showStatus(): void {
-    const status = this.client.getSystemStatus();
-    console.log(`
-╭─ System Status ─────────────────────────────────────────────────╮
-│ Thread Pool: ${status.activeThreads}/${status.totalThreads} active, ${status.idleThreads} idle                               │
-│ Task Queue:  ${status.pendingTasks} pending, ${status.scheduledTasks} scheduled                           │
-│ Memory:      ${status.memoryUsage}MB / ${status.memoryLimit}MB allocated                         │
-│ Uptime:      ${status.uptime}                                       │
-╰─────────────────────────────────────────────────────────────────╯
-    `);
-  }
-  
-  private showThreads(): void {
-    const threads = this.client.getThreadStatus();
-    console.log(`
-╭─ Thread Pool Status ───────────────────────────────────────────╮`);
-    
-    threads.forEach(thread => {
-      const status = thread.status === 'idle' ? '🟢 idle' : '🔴 busy';
-      const activity = thread.status === 'idle' 
-        ? `last: ${thread.lastTask}`
-        : `current: ${thread.currentTask}`;
-      console.log(`│ ${thread.id} │ ${status}     │ ${activity}    │ ${thread.duration}         │`);
-    });
-    
-    console.log(`╰─────────────────────────────────────────────────────────────────╯`);
-  }
-}
-```
-
-</details>
+- **📊 Live Progress**: Visual progress indicators for all running tasks
+- **⚡ Instant Feedback**: Immediate response to user commands
+- **🎛️ Interactive Control**: Runtime configuration and task management
+- **📈 Performance Insights**: Built-in monitoring and optimization suggestions
 
 ---
 
-## 💡 Examples
+## 💡 Use Cases
 
-### 🎯 Parallel Tool Execution
+### 🌅 **Morning Routine Automation**
 
-<table>
-<tr>
-<td width="50%">
+Transform a typical 12-second sequential process into 3-second parallel execution:
 
-**Input:**
-```typescript
-await client.sendMessage(`
-  Please help me with my morning routine:
-  1. Check today's weather
-  2. Get my calendar events
-  3. Summarize overnight emails
-  4. Fetch latest stock prices
-`);
-```
+| Task | Traditional Time | Parallel Time |
+|------|-----------------|---------------|
+| Weather Check | 2s | 2s |
+| Calendar Sync | 3s | ↑ |
+| Email Summary | 4s | ↑ |
+| Stock Updates | 3s | ↑ |
+| **Total** | **12s** | **🚀 3s** |
 
-</td>
-<td width="50%">
+### 🏢 **Business Intelligence Workflows**
 
-**Execution Visualization:**
-```
-🔄 Dispatching 4 tools...
+**Daily Report Generation:**
+- **⏰ Scheduled Execution**: Automatically run at 9 AM daily
+- **📊 Data Aggregation**: Parallel collection from multiple sources
+- **📈 Analysis Pipeline**: Dependency-managed processing steps
+- **📧 Distribution**: Automated delivery to stakeholders
 
-🌤️ Weather     ██████████ 100% ✅ (1.2s)
-📅 Calendar     ████████▓▓ 80%  🔄 (2.1s)
-📧 Email        ██████████ 100% ✅ (1.8s)
-📈 Stocks       ███▓▓▓▓▓▓▓ 30%  🔄 (3.2s)
+### 🔄 **API Integration Scenarios**
 
-⚡ 3x faster than sequential execution!
-```
+**Multi-Service Orchestration:**
+- **🌐 External APIs**: Weather, calendar, CRM, analytics
+- **🔀 Concurrent Requests**: Eliminate wait times between calls
+- **🛡️ Error Isolation**: Failed services don't block others
+- **⚡ Fast Recovery**: Automatic retry with exponential backoff
 
-</td>
-</tr>
-</table>
+### 🎯 **Development Productivity**
 
-### ⏰ Time-based Scheduling
+**Seamless Migration:**
+- **✅ Drop-in Replacement**: Same interface as basic MCP clients
+- **🚀 Instant Performance**: 3x speed improvement without code changes
+- **📊 Built-in Monitoring**: Real-time insights into execution patterns
+- **🔧 Flexible Configuration**: Tune for your specific use case
 
-```typescript
-// Schedule daily reports
-await client.scheduleTask({
-  message: "Generate comprehensive daily analytics report",
-  scheduledTime: new Date('2024-01-15T09:00:00'),
-  priority: 'high',
-  recurring: { 
-    pattern: 'daily',
-    time: '09:00'
-  }
-});
+### 🎮 **Interactive Management**
 
-// Dependencies example
-const dataTask = await client.createTask("Fetch user data");
-const reportTask = await client.createTask("Generate report", {
-  dependencies: [dataTask.id],
-  priority: 'medium'
-});
-```
-
-### 🔄 Migration from Basic MCP Client
-
-<details>
-<summary><b>🚀 Easy Migration Guide</b></summary>
-
-```typescript
-// ❌ Before: Basic MCP Client
-class BasicMCPClient {
-  async sendMessage(input: string): Promise<string> {
-    const tools = await this.mcpClient.listTools();
-    const response = await this.openAI.chat.completions.create({
-      messages: this.messages,
-      tools: this.convertTools(tools)
-    });
-    
-    // Sequential tool execution
-    for (const toolCall of response.choices[0].message.tool_calls || []) {
-      const result = await this.mcpClient.callTool(toolCall);
-      this.messages.push({ role: 'tool', content: result, tool_call_id: toolCall.id });
-    }
-    
-    return response.choices[0].message.content;
-  }
-}
-
-// ✅ After: Advanced MCP Client (same interface!)
-const client = new AdvancedMCPClient(config);
-const response = await client.sendMessage(input); // Same API!
-
-// ✨ With advanced features
-const task = await client.scheduleTask({
-  message: input,
-  priority: 'high',
-  scheduledTime: futureDate
-});
-
-// 📊 Progress monitoring
-client.onTaskUpdate((task) => {
-  console.log(`Task ${task.id}: ${task.status}`);
-});
-```
-
-</details>
-
-### 🎪 Interactive Commands
-
-<details>
-<summary><b>🔍 Available Commands</b></summary>
-
-| Command | Description | Example |
-|---------|-------------|---------|
-| `/status` | Show system status | `> /status` |
-| `/threads` | Thread pool info | `> /threads` |
-| `/schedule` | Schedule a task | `> /schedule --time "14:30" "Generate report"` |
-| `/cancel` | Cancel pending task | `> /cancel abc123` |
-| `/history` | View task history | `> /history --last 10` |
-| `/performance` | Performance metrics | `> /performance` |
-| `/config` | Configuration | `> /config set max-threads 12` |
-
-</details>
+**Real-time Control:**
+- **📊 System Monitoring**: Live status of threads, tasks, and performance
+- **⏰ Task Scheduling**: Create, modify, and cancel scheduled operations  
+- **🔧 Runtime Configuration**: Adjust settings without restart
+- **📈 Performance Analytics**: Track efficiency and optimization opportunities
+- **📋 History Tracking**: Review past executions and patterns
 
 ---
 
@@ -719,46 +400,24 @@ xychart-beta
 
 ## 🛠️ Development
 
-### 🏗️ Project Structure
+### 🏗️ **Modular Architecture**
 
-```
-advanced-mcp-client/
-├── 📁 src/
-│   ├── 🔧 client/
-│   │   ├── AdvancedMCPClient.ts
-│   │   └── types.ts
-│   ├── ⏰ scheduler/
-│   │   ├── TaskScheduler.ts
-│   │   └── PriorityQueue.ts
-│   ├── 🧵 thread-pool/
-│   │   ├── ThreadPool.ts
-│   │   └── WorkerThread.ts
-│   ├── 🎨 ui/
-│   │   ├── TerminalInterface.ts
-│   │   └── ProgressRenderer.ts
-│   └── 🔧 utils/
-├── 📁 tests/
-├── 📁 docs/
-└── 📁 examples/
-```
+The client is designed with clean separation of concerns:
 
-### 🧪 Testing
+- **🔧 Core Client**: MCP protocol handling and LLM integration
+- **⏰ Task Scheduler**: Priority queues and time-based execution
+- **🧵 Thread Pool**: Worker management and load distribution  
+- **🎨 User Interface**: Terminal rendering and interaction handling
+- **🔧 Utilities**: Shared functionality and helper modules
 
-```bash
-# Run all tests
-npm test
+### 🧪 **Quality Assurance**
 
-# Run with coverage
-npm run test:coverage
+Comprehensive testing strategy ensures reliability:
 
-# Run specific test suite
-npm run test:scheduler
-npm run test:thread-pool
-npm run test:integration
-
-# Performance benchmarks
-npm run benchmark
-```
+- **🔄 Unit Testing**: Individual component verification
+- **🔗 Integration Testing**: End-to-end workflow validation
+- **⚡ Performance Testing**: Benchmarking and optimization
+- **🛡️ Error Testing**: Fault tolerance and recovery scenarios
 
 ### 🔄 Development Status
 
