@@ -20,11 +20,8 @@
 
 ## 🌟 Why Advanced MCP Client?
 
-<table>
-<tr>
-<td width="50%">
+### 🐌 **Traditional MCP Clients**
 
-### 🐌 Traditional MCP Clients
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -41,16 +38,12 @@ sequenceDiagram
     C->>T3: Execute (4s)
     T3-->>C: Result
     C-->>U: Response (12s total)
+    
+    Note over U,T3: ❌ Sequential Bottlenecks<br/>❌ Resource Underutilization<br/>❌ Poor User Experience
 ```
 
-**❌ Sequential Bottlenecks**  
-**❌ Resource Underutilization**  
-**❌ Poor User Experience**
+### ⚡ **Advanced MCP Client**
 
-</td>
-<td width="50%">
-
-### ⚡ Advanced MCP Client
 ```mermaid
 sequenceDiagram
     participant U as User
@@ -76,15 +69,9 @@ sequenceDiagram
     T3-->>TP: Result (4s)
     TP-->>C: Aggregated Results
     C-->>U: Response (5s total)
+    
+    Note over U,T3: ✅ 60% Faster Execution<br/>✅ Maximum Resource Usage<br/>✅ Exceptional User Experience
 ```
-
-**✅ 60% Faster Execution**  
-**✅ Maximum Resource Usage**  
-**✅ Exceptional User Experience**
-
-</td>
-</tr>
-</table>
 
 ---
 
@@ -163,75 +150,86 @@ Overall: ████████▓▓▓▓▓▓▓▓▓▓▓▓ 61% (4 too
 
 ## 🏗️ Architecture Deep Dive
 
-### 🔄 Execution Flow Comparison
+### 🔄 **Traditional vs Advanced Execution Flow**
 
+**🐌 Traditional Sequential Processing:**
 ```mermaid
 graph TD
-    subgraph "🐌 Traditional Flow"
-        A1[User Input] --> B1[LLM Processing]
-        B1 --> C1[Tool 1 Execution]
-        C1 --> D1[Tool 2 Execution]
-        D1 --> E1[Tool 3 Execution]
-        E1 --> F1[Response]
-        
-        style A1 fill:#ffebee
-        style F1 fill:#ffebee
-    end
+    A1[🔵 User Input] --> B1[🤖 LLM Processing]
+    B1 --> C1[🔧 Tool 1 Execution<br/>⏱️ 5 seconds]
+    C1 --> D1[🔧 Tool 2 Execution<br/>⏱️ 3 seconds]
+    D1 --> E1[🔧 Tool 3 Execution<br/>⏱️ 4 seconds]
+    E1 --> F1[📤 Response<br/>💥 Total: 12s]
     
-    subgraph "⚡ Advanced Flow"
-        A2[User Input] --> B2[LLM Processing]
-        B2 --> C2[Task Scheduler]
-        C2 --> D2[Thread Pool]
-        
-        D2 --> E2[Tool 1]
-        D2 --> F2[Tool 2]
-        D2 --> G2[Tool 3]
-        
-        E2 --> H2[Result Aggregator]
-        F2 --> H2
-        G2 --> H2
-        H2 --> I2[Response]
-        
-        style A2 fill:#e8f5e8
-        style I2 fill:#e8f5e8
-        style D2 fill:#fff3e0
-    end
+    style A1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    style F1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    style C1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style E1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
 ```
 
-### 🧵 Thread Pool Architecture
+**⚡ Advanced Parallel Processing:**
+```mermaid
+graph TD
+    A2[🔵 User Input] --> B2[🤖 LLM Processing]
+    B2 --> C2[📋 Task Scheduler]
+    C2 --> D2[🧵 Thread Pool]
+    
+    D2 --> E2[🔧 Tool 1<br/>⏱️ 5s]
+    D2 --> F2[🔧 Tool 2<br/>⏱️ 3s]
+    D2 --> G2[🔧 Tool 3<br/>⏱️ 4s]
+    
+    E2 --> H2[📊 Result Aggregator]
+    F2 --> H2
+    G2 --> H2
+    H2 --> I2[📤 Response<br/>🚀 Total: 5s]
+    
+    style A2 fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    style I2 fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    style D2 fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    style C2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style H2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+```
+
+### 🧵 **Thread Pool Architecture**
 
 ```mermaid
-graph LR
-    subgraph "🎯 Task Scheduler"
-        TS[Task Queue]
-        PS[Priority System]
-        DS[Dependency Resolver]
+graph TB
+    subgraph "📋 Task Management Layer"
+        TS[🎯 Task Scheduler<br/>Priority Queue]
+        PS[⚖️ Priority System<br/>High/Med/Low]
+        DS[🔗 Dependency Resolver<br/>Task Dependencies]
     end
     
-    subgraph "🧵 Thread Pool"
-        T1[Thread 1<br/>🟢 Idle]
-        T2[Thread 2<br/>🔴 Busy]
-        T3[Thread 3<br/>🟢 Idle]
-        T4[Thread 4<br/>🔴 Busy]
+    subgraph "🧵 Thread Pool Layer"
+        T1[🟢 Thread 1<br/>Status: Idle<br/>Last: Weather API]
+        T2[🔴 Thread 2<br/>Status: Busy<br/>Current: Data Analysis]
+        T3[🟢 Thread 3<br/>Status: Idle<br/>Last: Email Send]
+        T4[🔴 Thread 4<br/>Status: Busy<br/>Current: File Processing]
     end
     
-    subgraph "🔧 MCP Tools"
-        MT1[🌤️ Weather]
-        MT2[📊 Analytics]
-        MT3[📧 Email]
-        MT4[🔍 Search]
+    subgraph "🔧 MCP Tools Layer"
+        MT1[🌤️ Weather Service<br/>External API]
+        MT2[📊 Analytics Engine<br/>Data Processing]
+        MT3[📧 Email System<br/>SMTP Service]
+        MT4[🔍 Search Service<br/>Database Query]
     end
     
     TS --> T1
     TS --> T3
-    T2 --> MT1
-    T4 --> MT2
+    PS --> TS
+    DS --> TS
     
-    style TS fill:#e3f2fd
-    style T1 fill:#e8f5e8
-    style T2 fill:#ffebee
-    style T3 fill:#e8f5e8
-    style T4 fill:#ffebee
+    T2 --> MT2
+    T4 --> MT1
+    
+    style TS fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
+    style PS fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    style DS fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style T1 fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    style T2 fill:#ffebee,stroke:#f44336,stroke-width:2px
+    style T3 fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
+    style T4 fill:#ffebee,stroke:#f44336,stroke-width:2px
 ```
 
 ---
