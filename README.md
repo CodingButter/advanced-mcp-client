@@ -40,6 +40,13 @@ sequenceDiagram
     C-->>U: Response (12s total)
     
     Note over U,T3: ❌ Sequential Bottlenecks<br/>❌ Resource Underutilization<br/>❌ Poor User Experience
+    
+    rect rgb(255, 235, 238)
+        U->>C: Sequential processing
+        C->>T1: Tool execution blocks
+        T1-->>C: Must wait for completion
+        C->>T2: Before next tool can start
+    end
 ```
 
 ### ⚡ **Advanced MCP Client**
@@ -71,6 +78,14 @@ sequenceDiagram
     C-->>U: Response (5s total)
     
     Note over U,T3: ✅ 60% Faster Execution<br/>✅ Maximum Resource Usage<br/>✅ Exceptional User Experience
+    
+    rect rgb(232, 245, 233)
+        par All tools execute simultaneously
+            TP->>T1: Parallel execution
+            TP->>T2: No waiting required
+            TP->>T3: Maximum efficiency
+        end
+    end
 ```
 
 ---
@@ -119,30 +134,75 @@ mindmap
 <details>
 <summary><b>🖼️ Click to see the stunning terminal interface</b></summary>
 
-```
-╭─────────────────────────────────────────────────────────────────╮
-│                  🚀 Advanced MCP Client v2.0                   │
-├─────────────────────────────────────────────────────────────────┤
-│ 🔗 Connected: 3 servers │ 🧵 Threads: 6/8 │ 📋 Queue: 2 tasks │
-╰─────────────────────────────────────────────────────────────────╯
+<div style="background: linear-gradient(135deg, #1e1e2e 0%, #2d2d3a 100%); padding: 20px; border-radius: 12px; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; color: #cdd6f4; margin: 20px 0; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
 
-╭─ 🎯 Active Tasks ───────────────────────────────────────────────╮
-│ [#abc123] 🔄 Weather Analysis       │ Thread-2 │ ⏱️  00:45     │
-│ [#def456] ⏳ Scheduled Report       │ 🕐 14:30  │ ⏰ +2h 15m   │
-│ [#ghi789] 🎲 ML Model Training      │ Thread-4 │ 🔥 03:22     │
-╰─────────────────────────────────────────────────────────────────╯
+<div style="background: linear-gradient(90deg, #89b4fa 0%, #cba6f7 100%); padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 15px; color: #1e1e2e; font-weight: bold;">
+🚀 Advanced MCP Client v2.0
+</div>
 
-🔄 Executing tools in parallel:
+<div style="display: flex; justify-content: space-between; background: rgba(116, 199, 236, 0.1); padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+<span>🔗 Connected: <span style="color: #a6e3a1;">3 servers</span></span>
+<span>🧵 Threads: <span style="color: #f9e2af;">6/8 active</span></span>
+<span>📋 Queue: <span style="color: #fab387;">2 tasks</span></span>
+</div>
 
-🌤️  Weather API     ████████████████████ 100% ✅ (2.1s)
-📊 Data Analysis    ███████████████████▓ 95%  🔄 (2.8s)
-📧 Email Service    ████████▓▓▓▓▓▓▓▓▓▓▓▓ 40%  🔄 (5.4s)
-🤖 AI Processing    ██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 10%  🔄 (1.2s)
+<div style="background: rgba(166, 227, 161, 0.1); border-left: 4px solid #a6e3a1; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
+<div style="color: #a6e3a1; font-weight: bold; margin-bottom: 10px;">🎯 Active Tasks</div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#abc123]</span> 🔄 Weather Analysis <span style="float: right; color: #f38ba8;">Thread-2 | ⏱️ 00:45</span></div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#def456]</span> ⏳ Scheduled Report <span style="float: right; color: #fab387;">🕐 14:30 | ⏰ +2h 15m</span></div>
+<div style="margin: 8px 0;"><span style="color: #89b4fa;">[#ghi789]</span> 🎲 ML Model Training <span style="float: right; color: #f38ba8;">Thread-4 | 🔥 03:22</span></div>
+</div>
 
-Overall: ████████▓▓▓▓▓▓▓▓▓▓▓▓ 61% (4 tools active)
+<div style="background: rgba(137, 180, 250, 0.1); border-left: 4px solid #89b4fa; padding: 15px; margin: 15px 0; border-radius: 0 8px 8px 0;">
+<div style="color: #89b4fa; font-weight: bold; margin-bottom: 10px;">🔄 Executing tools in parallel:</div>
 
-> █
-```
+<div style="margin: 10px 0;">
+🌤️ Weather API
+<div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
+<div style="background: linear-gradient(90deg, #a6e3a1, #94e2d5); height: 100%; width: 100%; border-radius: 10px;"></div>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">100% ✅ (2.1s)</span>
+</div>
+</div>
+
+<div style="margin: 10px 0;">
+📊 Data Analysis
+<div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
+<div style="background: linear-gradient(90deg, #f9e2af, #fab387); height: 100%; width: 95%; border-radius: 10px;"></div>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #1e1e2e; font-weight: bold;">95% 🔄 (2.8s)</span>
+</div>
+</div>
+
+<div style="margin: 10px 0;">
+📧 Email Service
+<div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
+<div style="background: linear-gradient(90deg, #89b4fa, #cba6f7); height: 100%; width: 40%; border-radius: 10px;"></div>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">40% 🔄 (5.4s)</span>
+</div>
+</div>
+
+<div style="margin: 10px 0;">
+🤖 AI Processing
+<div style="background: #313244; height: 20px; border-radius: 10px; margin: 5px 0; position: relative; overflow: hidden;">
+<div style="background: linear-gradient(90deg, #f38ba8, #eba0ac); height: 100%; width: 10%; border-radius: 10px;"></div>
+<span style="position: absolute; top: 2px; right: 8px; font-size: 12px; color: #cdd6f4; font-weight: bold;">10% 🔄 (1.2s)</span>
+</div>
+</div>
+
+<div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #45475a;">
+<strong>Overall Progress:</strong>
+<div style="background: #313244; height: 24px; border-radius: 12px; margin: 8px 0; position: relative; overflow: hidden;">
+<div style="background: linear-gradient(90deg, #89b4fa, #cba6f7, #f38ba8); height: 100%; width: 61%; border-radius: 12px;"></div>
+<span style="position: absolute; top: 5px; left: 12px; font-size: 12px; color: #1e1e2e; font-weight: bold;">61% (4 tools active)</span>
+</div>
+</div>
+
+</div>
+
+<div style="margin-top: 15px; padding: 10px; background: rgba(69, 71, 90, 0.3); border-radius: 6px;">
+<span style="color: #89b4fa;">❯</span> <span style="color: #cdd6f4;">_</span>
+</div>
+
+</div>
 
 </details>
 
@@ -161,11 +221,12 @@ graph TD
     D1 --> E1[🔧 Tool 3 Execution<br/>⏱️ 4 seconds]
     E1 --> F1[📤 Response<br/>💥 Total: 12s]
     
-    style A1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style F1 fill:#ffebee,stroke:#d32f2f,stroke-width:2px
-    style C1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style D1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style E1 fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style A1 fill:#ffcccb,stroke:#d32f2f,stroke-width:3px,color:#000
+    style F1 fill:#ffcccb,stroke:#d32f2f,stroke-width:3px,color:#000
+    style C1 fill:#ffe0b3,stroke:#f57c00,stroke-width:2px,color:#000
+    style D1 fill:#ffe0b3,stroke:#f57c00,stroke-width:2px,color:#000
+    style E1 fill:#ffe0b3,stroke:#f57c00,stroke-width:2px,color:#000
+    style B1 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
 ```
 
 **⚡ Advanced Parallel Processing:**
@@ -184,31 +245,35 @@ graph TD
     G2 --> H2
     H2 --> I2[📤 Response<br/>🚀 Total: 5s]
     
-    style A2 fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    style I2 fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    style D2 fill:#fff3e0,stroke:#f57c00,stroke-width:3px
-    style C2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    style H2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style A2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
+    style I2 fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px,color:#000
+    style D2 fill:#ffe0b3,stroke:#f57c00,stroke-width:3px,color:#000
+    style C2 fill:#bbdefb,stroke:#1976d2,stroke-width:2px,color:#000
+    style H2 fill:#e1bee7,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style B2 fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#000
+    style E2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style F2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style G2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
 ```
 
 ### 🧵 **Thread Pool Architecture**
 
 ```mermaid
 graph TB
-    subgraph "📋 Task Management Layer"
+    subgraph TML["📋 Task Management Layer"]
         TS[🎯 Task Scheduler<br/>Priority Queue]
         PS[⚖️ Priority System<br/>High/Med/Low]
         DS[🔗 Dependency Resolver<br/>Task Dependencies]
     end
     
-    subgraph "🧵 Thread Pool Layer"
+    subgraph TPL["🧵 Thread Pool Layer"]
         T1[🟢 Thread 1<br/>Status: Idle<br/>Last: Weather API]
         T2[🔴 Thread 2<br/>Status: Busy<br/>Current: Data Analysis]
         T3[🟢 Thread 3<br/>Status: Idle<br/>Last: Email Send]
         T4[🔴 Thread 4<br/>Status: Busy<br/>Current: File Processing]
     end
     
-    subgraph "🔧 MCP Tools Layer"
+    subgraph MTL["🔧 MCP Tools Layer"]
         MT1[🌤️ Weather Service<br/>External API]
         MT2[📊 Analytics Engine<br/>Data Processing]
         MT3[📧 Email System<br/>SMTP Service]
@@ -223,13 +288,17 @@ graph TB
     T2 --> MT2
     T4 --> MT1
     
-    style TS fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
-    style PS fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    style DS fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style T1 fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
-    style T2 fill:#ffebee,stroke:#f44336,stroke-width:2px
-    style T3 fill:#e8f5e8,stroke:#4caf50,stroke-width:2px
-    style T4 fill:#ffebee,stroke:#f44336,stroke-width:2px
+    style TS fill:#bbdefb,stroke:#1976d2,stroke-width:3px,color:#000
+    style PS fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+    style DS fill:#ffe0b3,stroke:#f57c00,stroke-width:2px,color:#000
+    style T1 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+    style T2 fill:#ffcccb,stroke:#d32f2f,stroke-width:2px,color:#000
+    style T3 fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px,color:#000
+    style T4 fill:#ffcccb,stroke:#d32f2f,stroke-width:2px,color:#000
+    style MT1 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style MT2 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style MT3 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
+    style MT4 fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#000
 ```
 
 ---
